@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Anton&family=Archivo+Black&family=Bangers&family=Barlow+Condensed:wght@700&family=Bebas+Neue&family=Black+Ops+One&family=Bungee&family=Caveat:wght@700&family=Chakra+Petch:wght@700&family=Cinzel:wght@900&family=Cormorant+Garamond:wght@700&family=DM+Serif+Display&family=Dancing+Script:wght@700&family=Exo+2:wght@900&family=Fjalla+One&family=Fredoka:wght@700&family=Great+Vibes&family=Lobster&family=Lora:wght@700&family=Luckiest+Guy&family=Michroma&family=Monoton&family=Montserrat:wght@900&family=Orbitron:wght@900&family=Oswald:wght@700&family=Pacifico&family=Passion+One&family=Permanent+Marker&family=Playfair+Display:wght@900&family=Poppins:wght@900&family=Press+Start+2P&family=Rajdhani:wght@700&family=Raleway:wght@900&family=Righteous&family=Rubik+Mono+One&family=Russo+One&family=Sacramento&family=Satisfy&family=Silkscreen&family=Sora:wght@800&family=Space+Grotesk:wght@700&family=Teko:wght@700&family=Titan+One&family=Ultra&display=swap");
+@import "tailwindcss";
+
+.glass-panel {
+  background: rgba(10, 10, 20, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+.glass-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.glass-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.glass-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.tool-active {
+  background: rgba(139, 92, 246, 0.2) !important;
+  box-shadow: inset 0 0 0 1.5px #8b5cf6 !important;
+}
+input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #a78bfa;
+  cursor: pointer;
+  margin-top: -5px;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+.scrubber::-webkit-slider-runnable-track {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.scrubber::-webkit-slider-thumb {
+  height: 18px;
+  width: 18px;
+  margin-top: -7px;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+}
+.panel-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.panel-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.panel-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}

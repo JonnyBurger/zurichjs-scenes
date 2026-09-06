@@ -17,9 +17,12 @@ import {
 } from "./NameLetterCycle";
 import { NameCornerPin } from "./NameCornerPin";
 import { NamePanelSpin } from "./NamePanelSpin";
+import { NameScatterBounce } from "./NameScatterBounce";
 import { NameWeightSwipe } from "./NameWeightSwipe";
 import { SplitNameSlide } from "./SplitNameSlide";
 import type { Speaker } from "./speaker";
+import { YellowItalicLetterRise } from "./YellowItalicLetterRise";
+import { ZurichOfficeTextBehind } from "./ZurichOfficeTextBehind";
 
 export const Main: React.FC<Speaker> = ({ avatarSrc, firstName, lastName }) => {
   const frame = useCurrentFrame();
@@ -49,12 +52,15 @@ export const Main: React.FC<Speaker> = ({ avatarSrc, firstName, lastName }) => {
       </Sequence>
 
       <Sequence
-        name={`${lastName} italic 01 — 2 beats`}
+        name={`${lastName} yellow italic letter rise — 2 beats`}
         from={78}
         durationInFrames={24}
         premountFor={60}
       >
-        <ItalicNameSlide animationDurationInFrames={24} text={lastName} />
+        <YellowItalicLetterRise
+          animationDurationInFrames={24}
+          text={lastName}
+        />
       </Sequence>
 
       <Sequence
@@ -114,12 +120,12 @@ export const Main: React.FC<Speaker> = ({ avatarSrc, firstName, lastName }) => {
       </Sequence>
 
       <Sequence
-        name={`${lastName} color trail pan — 2 beats`}
+        name={`${lastName} scatter bounce — 2 beats`}
         from={221}
         durationInFrames={24}
         premountFor={60}
       >
-        <NameColorTrailPan animationDurationInFrames={24} text={lastName} />
+        <NameScatterBounce text={lastName} />
       </Sequence>
 
       <Sequence
@@ -154,19 +160,12 @@ export const Main: React.FC<Speaker> = ({ avatarSrc, firstName, lastName }) => {
       </Sequence>
 
       <Sequence
-        name="Zurich glass office — baked 2-beat cut"
+        name="Zurich glass office — text behind tower — 2 beats"
         from={316}
         durationInFrames={24}
         premountFor={60}
       >
-        <Video
-          name="Zurich glass office — pre-rendered speed ramp"
-          src={staticFile("video/zurich-office-beat-cut.mp4")}
-          muted
-          objectFit="cover"
-          premountFor={60}
-          style={{ height: "100%", width: "100%" }}
-        />
+        <ZurichOfficeTextBehind text={lastName} />
       </Sequence>
 
       <Sequence
@@ -209,16 +208,12 @@ export const Main: React.FC<Speaker> = ({ avatarSrc, firstName, lastName }) => {
       </Sequence>
 
       <Sequence
-        name="Split name 03 — 2 beats"
+        name={`${lastName} color trail pan — 2 beats`}
         from={411}
         durationInFrames={24}
         premountFor={60}
       >
-        <SplitNameSlide
-          animationDurationInFrames={24}
-          firstName={firstName}
-          lastName={lastName}
-        />
+        <NameColorTrailPan animationDurationInFrames={24} text={lastName} />
       </Sequence>
 
       <Sequence

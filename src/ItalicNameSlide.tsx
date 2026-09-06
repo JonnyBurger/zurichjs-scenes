@@ -63,7 +63,7 @@ export const ItalicNameSlide: React.FC<ItalicNameSlideProps> = ({
             whiteSpace: "nowrap",
             WebkitTextStroke: "27px #FFFFFF",
             paintOrder: "stroke fill",
-            translate: "71.4px -186.8px",
+            translate: "71.4px -85.7px",
             scale: 1.249,
           }}
         >

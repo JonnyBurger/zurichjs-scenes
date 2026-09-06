@@ -1,4 +1,5 @@
 import { loadFont } from "@remotion/google-fonts/Figtree";
+import { measureText } from "@remotion/layout-utils";
 import {
   AbsoluteFill,
   Easing,
@@ -14,10 +15,69 @@ const { fontFamily } = loadFont("normal", {
 });
 
 const canvasWidth = 1920;
-const panelHeight = 540;
-const sharedFontSize = 900;
+const maximumFontSize = 900;
 const horizontalPadding = 72;
 const entryDistance = canvasWidth * 4;
+
+const getSharedFontSize = (firstName: string, lastName: string) => {
+  const referenceFontSize = 100;
+  const availableWidth = canvasWidth - horizontalPadding * 2;
+  const widestText = Math.max(
+    measureText({
+      text: firstName,
+      fontFamily,
+      fontSize: referenceFontSize,
+      fontWeight: 900,
+      validateFontIsLoaded: true,
+    }).width,
+    measureText({
+      text: lastName,
+      fontFamily,
+      fontSize: referenceFontSize,
+      fontWeight: 900,
+      validateFontIsLoaded: true,
+    }).width,
+  );
+
+  return Math.min(
+    maximumFontSize,
+    (availableWidth / widestText) * referenceFontSize,
+  );
+};
+
+const BaselineText: React.FC<{
+  color: string;
+  fontSize: number;
+  text: string;
+}> = ({ color, fontSize, text }) => {
+  return (
+    <div
+      style={{
+        bottom: 0,
+        left: 0,
+        position: "absolute",
+        right: 0,
+        textAlign: "center",
+        whiteSpace: "nowrap",
+      }}
+    >
+      <span
+        style={{
+          color,
+          display: "inline-block",
+          fontFamily,
+          fontSize,
+          fontWeight: 900,
+          lineHeight: 1,
+          translate: "0 20%",
+          verticalAlign: "baseline",
+        }}
+      >
+        {text}
+      </span>
+    </div>
+  );
+};
 
 type HorizontalSplitNameSlideProps = {
   animationDurationInFrames?: number;
@@ -33,6 +93,7 @@ export const HorizontalSplitNameSlide: React.FC<
   const animationEndFrame = animationDurationInFrames
     ? animationDurationInFrames - 1
     : 1.75 * fps;
+  const sharedFontSize = getSharedFontSize(firstName, lastName) * 3.75;
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#19191B", overflow: "hidden" }}>
@@ -57,9 +118,9 @@ export const HorizontalSplitNameSlide: React.FC<
               [`-${entryDistance}px 0px`, "0px 0px"],
               {
                 easing: Easing.spring({
-                  allowTail: true,
                   damping: 200,
                   durationRestThreshold: 0.1,
+                  allowTail: true,
                 }),
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
@@ -67,26 +128,11 @@ export const HorizontalSplitNameSlide: React.FC<
             ),
           }}
         >
-          <svg
-            aria-label={firstName}
-            height={panelHeight}
-            viewBox={`0 0 ${canvasWidth} ${panelHeight}`}
-            width={canvasWidth}
-            style={{ display: "block", overflow: "visible" }}
-          >
-            <text
-              dominantBaseline="alphabetic"
-              fill="#19191B"
-              fontFamily={fontFamily}
-              fontSize={sharedFontSize}
-              fontWeight={900}
-              textAnchor="middle"
-              x={canvasWidth / 2}
-              y={panelHeight}
-            >
-              {firstName}
-            </text>
-          </svg>
+          <BaselineText
+            color="#19191B"
+            fontSize={sharedFontSize}
+            text={firstName}
+          />
         </Interactive.Div>
       </Interactive.Div>
 
@@ -111,10 +157,8 @@ export const HorizontalSplitNameSlide: React.FC<
               [`${entryDistance}px 0px`, "0px 0px"],
               {
                 easing: Easing.spring({
-                  allowTail: true,
                   damping: 200,
-                  mass: 0.8,
-                  stiffness: 130,
+                  allowTail: true,
                 }),
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
@@ -122,28 +166,11 @@ export const HorizontalSplitNameSlide: React.FC<
             ),
           }}
         >
-          <svg
-            aria-label={lastName}
-            height={panelHeight}
-            viewBox={`0 0 ${canvasWidth} ${panelHeight}`}
-            width={canvasWidth}
-            style={{ display: "block" }}
-          >
-            <text
-              dominantBaseline="alphabetic"
-              fill="#F1E270"
-              fontFamily={fontFamily}
-              fontSize={sharedFontSize}
-              fontWeight={900}
-              lengthAdjust="spacingAndGlyphs"
-              textAnchor="middle"
-              textLength={canvasWidth - horizontalPadding * 2}
-              x={canvasWidth / 2}
-              y={panelHeight}
-            >
-              {lastName}
-            </text>
-          </svg>
+          <BaselineText
+            color="#F1E270"
+            fontSize={sharedFontSize}
+            text={lastName}
+          />
         </Interactive.Div>
       </Interactive.Div>
     </AbsoluteFill>

@@ -120,7 +120,7 @@ export const NamePanelSpin: React.FC<NamePanelSpinProps> = ({
           color: "#19191B",
           display: "flex",
           fontFamily,
-          fontSize: 387,
+          fontSize: 1161,
           fontWeight: 900,
           inset: 0,
           justifyContent: "center",

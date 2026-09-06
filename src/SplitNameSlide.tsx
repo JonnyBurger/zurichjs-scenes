@@ -13,6 +13,12 @@ const { fontFamily } = loadFont("normal", {
   subsets: ["latin"],
 });
 
+const fontSize = 1292.335;
+const panelWidth = 1920 / 2;
+const rotatedLineWidth = fontSize * 0.95;
+const leftWordX = (panelWidth - rotatedLineWidth) / 2;
+const rightWordX = (panelWidth + rotatedLineWidth) / 2;
+
 type SplitNameSlideProps = {
   animationDurationInFrames?: number;
   firstName: string;
@@ -66,13 +72,13 @@ export const SplitNameSlide: React.FC<SplitNameSlideProps> = ({
             name={firstName}
             style={{
               position: "absolute",
-              left: 477,
+              left: leftWordX,
               top: 1032,
               rotate: "-90deg",
               transformOrigin: "0 0",
               color: "#258BCC",
               fontFamily,
-              fontSize: 516.934,
+              fontSize,
               fontWeight: 800,
               letterSpacing: 0,
               lineHeight: 0.95,
@@ -120,13 +126,13 @@ export const SplitNameSlide: React.FC<SplitNameSlideProps> = ({
             name={lastName}
             style={{
               position: "absolute",
-              left: 499,
+              left: rightWordX,
               top: -90,
               rotate: "90deg",
               transformOrigin: "0 0",
               color: "#FFFFFF",
               fontFamily,
-              fontSize: 516.934,
+              fontSize,
               fontWeight: 800,
               letterSpacing: 0,
               lineHeight: 0.95,

@@ -7,6 +7,7 @@ import {
   Interactive,
   interpolate,
   useCurrentFrame,
+  useVideoConfig,
 } from "remotion";
 import { heightOnlyWarp } from "./effects/height-only-warp";
 
@@ -20,8 +21,10 @@ const canvasHeight = 1080;
 const previewHeight = canvasHeight * 2;
 const previewSlices = 48;
 const horizontalMargin = 50;
-const tallEdgeScale = 3;
-const shortEdgeScale = 0.44;
+const tallEdgeScale = 4;
+const shortEdgeScale = 0.25;
+const cameraScale = 1.75;
+const cameraTravel = ((cameraScale - 1) * canvasHeight) / 2;
 
 const getTextFontSize = (text: string) => {
   const availableWidth = canvasWidth - horizontalMargin * 2;
@@ -168,9 +171,13 @@ export const NameCornerPin: React.FC<NameCornerPinProps> = ({
   textColor = "#19191B",
 }) => {
   const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
   const animationEndFrame = animationDurationInFrames
     ? Math.max(1, animationDurationInFrames - 1)
     : 30;
+  const panEndFrame = animationDurationInFrames
+    ? Math.max(1, animationDurationInFrames - 1)
+    : durationInFrames - 1;
   const springProgress = interpolate(frame, [0, animationEndFrame], [0, 1], {
     easing: Easing.spring({
       allowTail: true,
@@ -212,44 +219,63 @@ export const NameCornerPin: React.FC<NameCornerPinProps> = ({
       }}
     >
       <Interactive.Div
-        name="Full-canvas corner-pin surface"
+        name="Top-to-bottom camera pan"
         style={{
           inset: 0,
           position: "absolute",
+          scale: cameraScale,
+          transformOrigin: "center center",
+          translate: interpolate(
+            frame,
+            [0, panEndFrame],
+            [`0px ${cameraTravel}px`, `0px -${cameraTravel}px`],
+            {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            },
+          ),
         }}
       >
-        {htmlInCanvasSupported ? (
-          <HtmlInCanvas
-            name={`${text} corner pin`}
-            width={canvasWidth}
-            height={canvasHeight}
-            pixelDensity={4}
-            effects={[
-              heightOnlyWarp({
-                leftScale: leftEdgeHeight,
-                rightScale: rightEdgeHeight,
-              }),
-            ]}
-          >
-            <TextArtwork color={textColor} text={text} />
-          </HtmlInCanvas>
-        ) : (
-          <div
-            style={{
-              left: 0,
-              position: "absolute",
-              top: "50%",
-              translate: "0 -50%",
-            }}
-          >
-            <SlicedPreview
-              color={textColor}
-              leftEdgeHeight={leftEdgeHeight}
-              rightEdgeHeight={rightEdgeHeight}
-              text={text}
-            />
-          </div>
-        )}
+        <Interactive.Div
+          name="Full-canvas corner-pin surface"
+          style={{
+            inset: 0,
+            position: "absolute",
+          }}
+        >
+          {htmlInCanvasSupported ? (
+            <HtmlInCanvas
+              name={`${text} corner pin`}
+              width={canvasWidth}
+              height={canvasHeight}
+              pixelDensity={4}
+              effects={[
+                heightOnlyWarp({
+                  leftScale: leftEdgeHeight,
+                  rightScale: rightEdgeHeight,
+                }),
+              ]}
+            >
+              <TextArtwork color={textColor} text={text} />
+            </HtmlInCanvas>
+          ) : (
+            <div
+              style={{
+                left: 0,
+                position: "absolute",
+                top: "50%",
+                translate: "0 -50%",
+              }}
+            >
+              <SlicedPreview
+                color={textColor}
+                leftEdgeHeight={leftEdgeHeight}
+                rightEdgeHeight={rightEdgeHeight}
+                text={text}
+              />
+            </div>
+          )}
+        </Interactive.Div>
       </Interactive.Div>
     </AbsoluteFill>
   );
