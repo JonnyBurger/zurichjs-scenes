@@ -4,7 +4,3 @@ dist
 .DS_Store
 .env
 out
-
-# Large local video assets (kept out of Git for now)
-public/video/zurich-flyover-remap-ready.mp4
-public/video/zurich-train-tracking.mp4
