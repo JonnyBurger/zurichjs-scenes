@@ -16,6 +16,8 @@ const { fontFamily } = loadFont("normal", {
 });
 
 const avatarSize = 302;
+const panelistGap = 36;
+const rowWidth = avatarSize * E18E_PANELISTS.length + panelistGap * 4;
 
 const RevealedLine: React.FC<{
   startFrame: number;
@@ -86,10 +88,26 @@ export const PanelSpeakerEndcard: React.FC = () => {
         }}
       >
         <Interactive.Div
+          name="e18e & friends — panel title"
+          style={{
+            color: "#050505",
+            fontSize: 104,
+            fontWeight: 900,
+            letterSpacing: -5,
+            lineHeight: 0.9,
+            marginBottom: 54,
+            textAlign: "left",
+            width: rowWidth,
+          }}
+        >
+          <RevealedLine startFrame={0} text="e18e & friends" />
+        </Interactive.Div>
+
+        <Interactive.Div
           name="Five panelists"
           style={{
             display: "flex",
-            gap: 36,
+            gap: panelistGap,
             justifyContent: "center",
           }}
         >
