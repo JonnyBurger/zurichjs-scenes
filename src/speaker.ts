@@ -7,6 +7,7 @@ export type Speaker = {
 
 export type ConferenceSpeaker = Speaker & {
   compositionId: string;
+  hasStandaloneComposition?: boolean;
 };
 
 export const CONFERENCE_SPEAKERS: ConferenceSpeaker[] = [
@@ -15,6 +16,8 @@ export const CONFERENCE_SPEAKERS: ConferenceSpeaker[] = [
     avatarSrc: "images/speakers/alexander-lichter.png",
     firstName: "Alexander",
     lastName: "Lichter",
+    // Panel-only speaker — represented by E18eFriendsPanel.
+    hasStandaloneComposition: false,
     sessionTitle: "e18e & friends - Live Episode",
   },
   {
@@ -38,6 +41,8 @@ export const CONFERENCE_SPEAKERS: ConferenceSpeaker[] = [
     avatarSrc: "images/speakers/carmen-huidobro.png",
     firstName: "Carmen",
     lastName: "Huidobro",
+    // MC only — keep the speaker data, but do not register a standalone video.
+    hasStandaloneComposition: false,
   },
   {
     compositionId: "DanielAfonso",
@@ -59,6 +64,7 @@ export const CONFERENCE_SPEAKERS: ConferenceSpeaker[] = [
     avatarSrc: "images/speakers/daniel-roe.png",
     firstName: "Daniel",
     lastName: "Roe",
+    sessionTitle: "Building for the Open Web",
   },
   {
     compositionId: "DebbieOBrien",
@@ -80,6 +86,8 @@ export const CONFERENCE_SPEAKERS: ConferenceSpeaker[] = [
     avatarSrc: "images/speakers/james-garbutt.png",
     firstName: "James",
     lastName: "Garbutt",
+    // Panel-only speaker — represented by E18eFriendsPanel.
+    hasStandaloneComposition: false,
     sessionTitle: "e18e & friends - Live Episode",
   },
   {
@@ -131,6 +139,8 @@ export const CONFERENCE_SPEAKERS: ConferenceSpeaker[] = [
     avatarSrc: "images/speakers/santosh-yadav.png",
     firstName: "Santosh",
     lastName: "Yadav",
+    // Panel-only speaker — represented by E18eFriendsPanel.
+    hasStandaloneComposition: false,
     sessionTitle: "e18e & friends - Live Episode",
   },
   {
@@ -152,6 +162,8 @@ export const CONFERENCE_SPEAKERS: ConferenceSpeaker[] = [
     avatarSrc: "images/speakers/tony-edwards.png",
     firstName: "Tony",
     lastName: "Edwards",
+    // MC only — keep the speaker data, but do not register a standalone video.
+    hasStandaloneComposition: false,
   },
   {
     compositionId: "TracyLee",

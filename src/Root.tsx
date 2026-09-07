@@ -278,18 +278,22 @@ export const RemotionRoot: React.FC = () => {
           width={1920}
           height={1080}
         />
-        {CONFERENCE_SPEAKERS.map(({ compositionId, ...speaker }) => (
-          <Composition
-            key={compositionId}
-            id={compositionId}
-            component={Main}
-            durationInFrames={604}
-            fps={30}
-            width={1920}
-            height={1080}
-            defaultProps={speaker}
-          />
-        ))}
+        {CONFERENCE_SPEAKERS.filter(
+          ({ hasStandaloneComposition }) => hasStandaloneComposition !== false,
+        ).map(
+          ({ compositionId, avatarSrc, firstName, lastName, sessionTitle }) => (
+            <Composition
+              key={compositionId}
+              id={compositionId}
+              component={Main}
+              durationInFrames={604}
+              fps={30}
+              width={1920}
+              height={1080}
+              defaultProps={{ avatarSrc, firstName, lastName, sessionTitle }}
+            />
+          ),
+        )}
       </Folder>
 
       <Folder name="Panels">
