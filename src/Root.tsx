@@ -17,13 +17,14 @@ import { NameWeightSwipe } from "./NameWeightSwipe";
 import { RotatingGeometryLoop } from "./RotatingGeometryLoop";
 import { SpeakerEndcard } from "./SpeakerEndcard";
 import { SplitNameSlide } from "./SplitNameSlide";
-import { DEFAULT_SPEAKER } from "./speaker";
+import { CONFERENCE_SPEAKERS, DEFAULT_SPEAKER } from "./speaker";
 import { StaticGeometryFrame91 } from "./StaticGeometryFrame91";
 import { ZurichFlyoverSpeedRamp } from "./ZurichFlyoverSpeedRamp";
 import { ZurichOfficeSpeedRamp } from "./ZurichOfficeSpeedRamp";
 import { ZurichOfficeTextBehind } from "./ZurichOfficeTextBehind";
 import { ZurichStockPreview } from "./ZurichStockPreview";
 import { ZurichTrainSpeedRamp } from "./ZurichTrainSpeedRamp";
+import { ZurichJSConf } from "./ZurichJSConf";
 import { YellowItalicLetterRise } from "./YellowItalicLetterRise";
 
 export const RemotionRoot: React.FC = () => {
@@ -255,6 +256,29 @@ export const RemotionRoot: React.FC = () => {
           width={1920}
           height={1080}
         />
+      </Folder>
+
+      <Folder name="Speakers">
+        <Composition
+          id="ZurichJSConf"
+          component={ZurichJSConf}
+          durationInFrames={604}
+          fps={30}
+          width={1920}
+          height={1080}
+        />
+        {CONFERENCE_SPEAKERS.map(({ compositionId, ...speaker }) => (
+          <Composition
+            key={compositionId}
+            id={compositionId}
+            component={Main}
+            durationInFrames={604}
+            fps={30}
+            width={1920}
+            height={1080}
+            defaultProps={speaker}
+          />
+        ))}
       </Folder>
     </>
   );

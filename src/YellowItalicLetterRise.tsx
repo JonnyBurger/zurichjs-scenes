@@ -1,4 +1,5 @@
 import { loadFont } from "@remotion/google-fonts/Figtree";
+import { measureText } from "@remotion/layout-utils";
 import {
   AbsoluteFill,
   Easing,
@@ -13,6 +14,12 @@ const { fontFamily } = loadFont("italic", {
   subsets: ["latin"],
 });
 
+const canvasWidth = 1920;
+const fontSize = 820;
+const letterSpacing = -42;
+const longTextEndX = -130;
+const italicOpticalCorrection = 64;
+
 type YellowItalicLetterRiseProps = {
   animationDurationInFrames?: number;
   text: string;
@@ -25,11 +32,34 @@ export const YellowItalicLetterRise: React.FC<
   const { durationInFrames } = useVideoConfig();
   const animationDuration =
     animationDurationInFrames ?? durationInFrames;
+  const textWidth = Array.from(text).reduce(
+    (width, letter) =>
+      width +
+      measureText({
+        text: letter,
+        fontFamily,
+        fontSize,
+        fontWeight: 900,
+        letterSpacing: `${letterSpacing}px`,
+        validateFontIsLoaded: true,
+        additionalStyles: {
+          fontStyle: "italic",
+        },
+      }).width,
+    0,
+  );
+  const endTranslateX =
+    textWidth <= canvasWidth
+      ? Math.max(
+          0,
+          (canvasWidth - textWidth) / 2 - italicOpticalCorrection,
+        )
+      : longTextEndX;
 
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: "#F1E270",
+        backgroundColor: "#FFFFFF",
         overflow: "hidden",
       }}
     >
@@ -44,7 +74,7 @@ export const YellowItalicLetterRise: React.FC<
           translate: interpolate(
             frame,
             [0, animationDuration - 1],
-            ["-1520px 0px", "-130px 0px"],
+            ["-1520px 0px", `${endTranslateX}px 0px`],
             {
               easing: Easing.bezier(0.16, 1, 0.3, 1),
               extrapolateLeft: "clamp",
@@ -59,13 +89,13 @@ export const YellowItalicLetterRise: React.FC<
             key={`${letter}-${index}`}
             name={`${letter} rises ${index + 1}`}
             style={{
-              color: "#19191B",
+              color: "#F1E270",
               display: "inline-block",
               fontFamily,
-              fontSize: 820,
+              fontSize,
               fontStyle: "italic",
               fontWeight: 900,
-              letterSpacing: -42,
+              letterSpacing,
               lineHeight: 0.92,
               translate: interpolate(
                 frame - index * 0.8,

@@ -92,7 +92,7 @@ export const HorizontalSplitNameSlide: React.FC<
   const { fps } = useVideoConfig();
   const animationEndFrame = animationDurationInFrames
     ? animationDurationInFrames - 1
-    : 1.75 * fps;
+    : 1.2 * fps;
   const sharedFontSize = getSharedFontSize(firstName, lastName) * 3.75;
 
   return (
@@ -114,7 +114,7 @@ export const HorizontalSplitNameSlide: React.FC<
             position: "absolute",
             translate: interpolate(
               frame,
-              [0, animationEndFrame],
+              [-10, animationEndFrame - 10],
               [`-${entryDistance}px 0px`, "0px 0px"],
               {
                 easing: Easing.spring({
@@ -153,11 +153,12 @@ export const HorizontalSplitNameSlide: React.FC<
             position: "absolute",
             translate: interpolate(
               frame,
-              [0, animationEndFrame],
+              [-10, animationEndFrame - 10],
               [`${entryDistance}px 0px`, "0px 0px"],
               {
                 easing: Easing.spring({
                   damping: 200,
+                  durationRestThreshold: 0.1,
                   allowTail: true,
                 }),
                 extrapolateLeft: "clamp",

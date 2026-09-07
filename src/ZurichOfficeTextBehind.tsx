@@ -7,7 +7,6 @@ import {
   interpolate,
   staticFile,
   useCurrentFrame,
-  useVideoConfig,
 } from "remotion";
 
 const { fontFamily } = loadFont("normal", {
@@ -26,11 +25,12 @@ const layerStyle: React.CSSProperties = {
   width: "100%",
 };
 
-export const ZurichOfficeTextBehind: React.FC<
-  ZurichOfficeTextBehindProps
-> = ({ text }) => {
+const animationDurationInFrames = 604;
+
+export const ZurichOfficeTextBehind: React.FC<ZurichOfficeTextBehindProps> = ({
+  text,
+}) => {
   const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#050505", overflow: "hidden" }}>
@@ -47,10 +47,10 @@ export const ZurichOfficeTextBehind: React.FC<
         name={`${text} — between office layers`}
         style={{
           alignItems: "flex-start",
-          color: "#258BCC",
+          color: "#F1E270",
           display: "flex",
           fontFamily,
-          fontSize: 450,
+          fontSize: 520,
           fontWeight: 900,
           inset: 0,
           justifyContent: "flex-end",
@@ -59,11 +59,10 @@ export const ZurichOfficeTextBehind: React.FC<
           padding: "48px 52px 0 0",
           position: "absolute",
           textAlign: "right",
-          textTransform: "uppercase",
           translate: interpolate(
             frame,
-            [0, durationInFrames - 1],
-            ["280px -50px", "-520px -50px"],
+            [0, animationDurationInFrames - 1],
+            ["0px -50px", "-800px -50px"],
             {
               easing: Easing.linear,
               extrapolateLeft: "clamp",

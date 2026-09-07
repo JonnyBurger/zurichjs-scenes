@@ -24,7 +24,20 @@ import type { Speaker } from "./speaker";
 import { YellowItalicLetterRise } from "./YellowItalicLetterRise";
 import { ZurichOfficeTextBehind } from "./ZurichOfficeTextBehind";
 
-export const Main: React.FC<Speaker> = ({ avatarSrc, firstName, lastName }) => {
+type MainProps = Speaker & {
+  endcardAvatarSrc?: string;
+  endcardFirstName?: string;
+  endcardLastName?: string;
+};
+
+export const Main: React.FC<MainProps> = ({
+  avatarSrc,
+  endcardAvatarSrc,
+  endcardFirstName,
+  endcardLastName,
+  firstName,
+  lastName,
+}) => {
   const frame = useCurrentFrame();
 
   return (
@@ -125,7 +138,13 @@ export const Main: React.FC<Speaker> = ({ avatarSrc, firstName, lastName }) => {
         durationInFrames={24}
         premountFor={60}
       >
-        <NameScatterBounce text={lastName} />
+        <Sequence
+          name="Scatter bounce animation — 5-frame early offset"
+          durationInFrames={29}
+          trimBefore={5}
+        >
+          <NameScatterBounce text={lastName} />
+        </Sequence>
       </Sequence>
 
       <Sequence
@@ -223,9 +242,9 @@ export const Main: React.FC<Speaker> = ({ avatarSrc, firstName, lastName }) => {
         premountFor={60}
       >
         <FinalSpeakerEndcard
-          avatarSrc={avatarSrc}
-          firstName={firstName}
-          lastName={lastName}
+          avatarSrc={endcardAvatarSrc ?? avatarSrc}
+          firstName={endcardFirstName ?? firstName}
+          lastName={endcardLastName ?? lastName}
         />
       </Sequence>
 

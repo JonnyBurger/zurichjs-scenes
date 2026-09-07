@@ -197,6 +197,10 @@ export const NameColorTrailPan: React.FC<NameColorTrailProps> = ({
     (textWidth / 2 - firstCharacterWidth / 2) * zoomedScale;
   const lastCharacterFocus =
     -(textWidth / 2 - lastCharacterWidth / 2) * zoomedScale;
+  const panStrength = interpolate(characters.length, [4, 9], [0.55, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   return (
     <TrailCanvas>
@@ -211,7 +215,10 @@ export const NameColorTrailPan: React.FC<NameColorTrailProps> = ({
           translate: interpolate(
             frame,
             [0, finalFrame],
-            [`${firstCharacterFocus}px 0px`, `${lastCharacterFocus}px 0px`],
+            [
+              `${firstCharacterFocus * panStrength}px 0px`,
+              `${lastCharacterFocus * panStrength}px 0px`,
+            ],
             {
               easing: Easing.spring({ damping: 200, allowTail: true }),
               extrapolateLeft: "clamp",
