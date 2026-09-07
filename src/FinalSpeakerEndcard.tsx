@@ -49,6 +49,7 @@ type FinalSpeakerEndcardProps = {
   avatarSrc: string;
   firstName: string;
   lastName: string;
+  sessionTitle?: string;
 };
 
 const SpinningLogoMask: React.FC = () => {
@@ -159,6 +160,7 @@ export const FinalSpeakerEndcard: React.FC<FinalSpeakerEndcardProps> = ({
   avatarSrc,
   firstName,
   lastName,
+  sessionTitle,
 }) => {
   const frame = useCurrentFrame();
 
@@ -192,6 +194,7 @@ export const FinalSpeakerEndcard: React.FC<FinalSpeakerEndcardProps> = ({
             avatarSrc={avatarSrc}
             firstName={firstName}
             lastName={lastName}
+            sessionTitle={sessionTitle}
           />
         </Sequence>
       </Interactive.Div>

@@ -20,7 +20,6 @@ const entryScale = 1.38;
 const scaleEndFrame = 24;
 const cubeStartFrame = 0;
 const cubeEndFrame = 24;
-const speakerLockupWidth = 1152;
 
 export const SPEAKER_ENDCARD_LOGO_ENTRY_SIZE = cubeSize * entryScale;
 
@@ -66,6 +65,8 @@ export const ZurichJsLogo: React.FC = () => {
 
 type TypedLineProps = {
   accentColor: string;
+  charactersPerSecond?: number;
+  finalColor?: string;
   frame: number;
   fps: number;
   name: string;
@@ -75,13 +76,14 @@ type TypedLineProps = {
 
 const TypedLine: React.FC<TypedLineProps> = ({
   accentColor,
+  charactersPerSecond = 20,
+  finalColor = "#000000",
   frame,
   fps,
   name,
   startFrame,
   text,
 }) => {
-  const charactersPerSecond = 20;
   const framesPerCharacter = fps / charactersPerSecond;
   const accentDuration = fps / charactersPerSecond;
 
@@ -96,7 +98,7 @@ const TypedLine: React.FC<TypedLineProps> = ({
           <span
             key={`${character}-${index}`}
             style={{
-              color: isAccented ? accentColor : "#000000",
+              color: isAccented ? accentColor : finalColor,
               opacity: isVisible ? 1 : 0,
             }}
           >
@@ -112,15 +114,32 @@ type SpeakerEndcardProps = {
   avatarSrc: string;
   firstName: string;
   lastName: string;
+  sessionTitle?: string;
 };
 
 export const SpeakerEndcard: React.FC<SpeakerEndcardProps> = ({
   avatarSrc,
   firstName,
   lastName,
+  sessionTitle,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const fullName = `${firstName} ${lastName}`;
+  const sessionTitleFontSize =
+    (sessionTitle?.length ?? 0) > 76
+      ? 84
+      : (sessionTitle?.length ?? 0) > 56
+        ? 96
+        : 112;
+  const speakerLockupWidth =
+    (sessionTitle?.length ?? 0) > 76
+      ? 1536
+      : (sessionTitle?.length ?? 0) > 56
+        ? 1440
+        : (sessionTitle?.length ?? 0) > 35
+          ? 1280
+          : 1100;
 
   return (
     <AbsoluteFill
@@ -138,7 +157,7 @@ export const SpeakerEndcard: React.FC<SpeakerEndcardProps> = ({
           alignItems: "center",
           display: "flex",
           gap: 44,
-          height: 360,
+          height: 460,
           scale: interpolate(frame, [0, scaleEndFrame], [entryScale, 1], {
             easing: Easing.spring({
               damping: 18,
@@ -217,38 +236,61 @@ export const SpeakerEndcard: React.FC<SpeakerEndcardProps> = ({
         </Interactive.Div>
 
         <Interactive.Div
-          name="Speaker name"
+          name="Speaker details"
           style={{
             color: "#000000",
             display: "flex",
             flex: 1,
             flexDirection: "column",
             fontFamily,
-            fontSize: 132,
             fontWeight: 900,
             justifyContent: "center",
-            letterSpacing: -6,
-            lineHeight: 0.84,
             minWidth: 0,
-            whiteSpace: "nowrap",
           }}
         >
-          <TypedLine
-            accentColor="#F6E779"
-            frame={frame}
-            fps={fps}
-            name={`${firstName} typed in yellow`}
-            startFrame={cubeEndFrame - 7}
-            text={firstName}
-          />
-          <TypedLine
-            accentColor="#2D93C9"
-            frame={frame}
-            fps={fps}
-            name={`${lastName} typed in blue`}
-            startFrame={cubeEndFrame - 7 + fps * 0.3}
-            text={lastName}
-          />
+          <Interactive.Div
+            name="Speaker name — single line"
+            style={{
+              fontSize: 72,
+              letterSpacing: -3.2,
+              lineHeight: 0.92,
+              marginBottom: sessionTitle ? 14 : 0,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <TypedLine
+              accentColor="#F6E779"
+              frame={frame}
+              finalColor="#2D93C9"
+              fps={fps}
+              name={`${fullName} typed in yellow`}
+              startFrame={cubeEndFrame - 7}
+              text={fullName}
+            />
+          </Interactive.Div>
+
+          {sessionTitle ? (
+            <Interactive.Div
+              name="Conference session title"
+              style={{
+                fontSize: sessionTitleFontSize,
+                letterSpacing: -3.5,
+                lineHeight: 0.91,
+                maxWidth: "100%",
+                textWrap: "balance",
+              }}
+            >
+              <TypedLine
+                accentColor="#2D93C9"
+                charactersPerSecond={30}
+                frame={frame}
+                fps={fps}
+                name={`${sessionTitle} typed in blue`}
+                startFrame={cubeEndFrame - 7 + fps * 0.3}
+                text={sessionTitle}
+              />
+            </Interactive.Div>
+          ) : null}
         </Interactive.Div>
       </Interactive.Div>
     </AbsoluteFill>

@@ -1,6 +1,8 @@
 import "./index.css";
 import { Composition, Folder } from "remotion";
+import { Break, BREAK_DURATION_IN_FRAMES } from "./Break";
 import { FinalSpeakerEndcard } from "./FinalSpeakerEndcard";
+import { E18eFriendsPanel } from "./E18eFriendsPanel";
 import { FortyFiveGeometry } from "./FortyFiveGeometry";
 import { HorizontalSplitNameSlide } from "./HorizontalSplitNameSlide";
 import { ItalicNameSlide } from "./ItalicNameSlide";
@@ -14,6 +16,7 @@ import {
 import { NamePanelSpin } from "./NamePanelSpin";
 import { NameScatterBounce } from "./NameScatterBounce";
 import { NameWeightSwipe } from "./NameWeightSwipe";
+import { PanelSpeakerEndcard } from "./PanelSpeakerEndcard";
 import { RotatingGeometryLoop } from "./RotatingGeometryLoop";
 import { SpeakerEndcard } from "./SpeakerEndcard";
 import { SplitNameSlide } from "./SplitNameSlide";
@@ -41,6 +44,14 @@ export const RemotionRoot: React.FC = () => {
       />
 
       <Folder name="Scenes">
+        <Composition
+          id="Break"
+          component={Break}
+          durationInFrames={BREAK_DURATION_IN_FRAMES}
+          fps={30}
+          width={1920}
+          height={1080}
+        />
         <Composition
           id="FortyFiveGeometry"
           component={FortyFiveGeometry}
@@ -279,6 +290,25 @@ export const RemotionRoot: React.FC = () => {
             defaultProps={speaker}
           />
         ))}
+      </Folder>
+
+      <Folder name="Panels">
+        <Composition
+          id="E18eFriendsPanel"
+          component={E18eFriendsPanel}
+          durationInFrames={604}
+          fps={30}
+          width={1920}
+          height={1080}
+        />
+        <Composition
+          id="E18ePanelEndcard"
+          component={PanelSpeakerEndcard}
+          durationInFrames={169}
+          fps={30}
+          width={1920}
+          height={1080}
+        />
       </Folder>
     </>
   );
