@@ -15,3 +15,19 @@ The repeating hold uses all six Rhythm Rally loops in a 19-phrase arrangement (1
 Generated assets are reproducible with `python3 tools/prepare-break.py`. This creates the repeating and timed music beds and an H.264 copy of the ProRes flag shot for browser playback; source files are untouched.
 
 Preview with `npm run dev`. Export with `npx remotion render Break out/break.mp4` (or substitute `BreakIntro` / `BreakLoop`). The playback system must loop `BreakLoop` without inserting a gap. The fixed five-minute version already repeats its media internally.
+
+## Separately supplied video assets
+
+The new video assets are not included in this PR. Before previewing or rendering
+the break compositions, provide the five source files under
+`public/video/drone-loops/`:
+
+- `4k-drone-aerial-view-of-zurich-city-waterfront-in-2026-01-21-02-19-30-utc.mp4`
+- `aerial-drone-wide-cinematic-shot-circling-around-g-2025-12-17-23-11-16-utc.mov`
+- `drone-establishing-shot-over-the-city-of-zurich-in-2026-01-21-12-30-54-utc.mp4`
+- `zoomed-in-drone-shot-circling-around-grossmunster-2025-12-17-15-37-29-utc.mov`
+- `zurich-switzerland-aerial-view-with-swiss-flag-2025-12-17-04-30-25-utc.mov`
+
+Then run `python3 tools/prepare-break.py` to generate
+`public/video/generated/break-swiss-flag.mp4`, or supply that generated file
+separately. The generated audio beds are included in Git.
