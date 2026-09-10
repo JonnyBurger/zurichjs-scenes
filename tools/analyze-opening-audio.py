@@ -63,7 +63,20 @@ for nominal in np.arange(0.3, 58.8, 0.6):
         offbeats.append({"detected_seconds": round(float(attack_times[peak]), 3),
                          "edit_frame": round(float(nominal) * 30),
                          "strength": round(float(attack_flux[peak]), 1)})
+# Stereo RMS distinguishes the two loud MC bangs from the earlier, quieter
+# high-frequency transient. A 5 ms window preserves their differing energy.
+stereo = samples.reshape(-1, channels) / 32768
+energy_size = round(sample_rate * 0.005)
+energy_count = len(stereo) // energy_size
+rms = np.sqrt(np.mean(stereo[:energy_count * energy_size].reshape(energy_count, energy_size, channels) ** 2, axis=(1, 2)))
+rms_times = (np.arange(energy_count) + 0.5) * energy_size / sample_rate
+hero_hits = []
+for label, nominal in [("Opening logo", 0.6), ("Carmen", 9.3), ("Tony", 9.6), ("350 attendees", 10.2), ("Final handoff", 58.2)]:
+    nearby = np.flatnonzero(np.abs(rms_times - nominal) < 0.035)
+    peak = nearby[np.argmax(rms[nearby])]
+    hero_hits.append({"content": label, "rms_peak_seconds": round(float(rms_times[peak]), 3), "stereo_rms": round(float(rms[peak]), 3), "edit_frame": round(nominal * 30)})
 report = {
+    "hero_hits": hero_hits,
     "source": str(SOURCE.relative_to(ROOT)),
     "sample_rate": sample_rate,
     "sample_frames": frames,

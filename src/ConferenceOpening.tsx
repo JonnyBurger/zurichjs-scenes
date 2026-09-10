@@ -15,7 +15,8 @@ import {
   OpeningFinale,
   TypeHit,
   TypeRibbons,
-  SpeakerRush,
+  SpeakerLineup,
+  MCIntro,
 } from "./opening/ArtDirection";
 import {
   beatFrame,
@@ -34,14 +35,7 @@ const Shot: React.FC<{ cue: OpeningCue; duration: number }> = ({
     case "orbit":
       return <OrbitIs duration={duration} />;
     case "mcs":
-      return (
-        <SpeakerRush
-          start={0}
-          duration={duration}
-          speakerIds={["CarmenHuidobro", "TonyEdwards"]}
-          label="OUR MCs"
-        />
-      );
+      return <MCIntro />;
     case "hit":
       return <TypeHit text={cue.text} duration={duration} light={cue.light} />;
     case "weight":
@@ -69,7 +63,7 @@ const Shot: React.FC<{ cue: OpeningCue; duration: number }> = ({
         <NameCornerPin text={cue.text} animationDurationInFrames={duration} />
       );
     case "speakers":
-      return <SpeakerRush start={cue.speakerStart ?? 0} duration={duration} />;
+      return <SpeakerLineup duration={duration} />;
     case "split":
       return (
         <CounterSplit
@@ -83,6 +77,7 @@ const Shot: React.FC<{ cue: OpeningCue; duration: number }> = ({
     case "stat":
       return (
         <NumberSequence
+          impact={cue.text === "350" || cue.text === "12"}
           value={cue.text}
           label={cue.second ?? ""}
           duration={duration}

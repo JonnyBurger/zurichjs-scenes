@@ -4,3 +4,8 @@ dist
 .DS_Store
 .env
 out
+
+# Large media is distributed through the release in tools/media-manifest.json.
+public/video/drone-loops/
+public/video/generated/
+public/audio/generated/

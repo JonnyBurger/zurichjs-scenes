@@ -57,22 +57,11 @@ export const OrbitIs: React.FC<{ duration: number }> = ({ duration }) => {
   );
 };
 
-/** The footage remains untouched. Only the type changes direction on beats.
- * Kept separate so approved speaker compositions retain their original motion.
- */
+/** Fixed typography; only its colour responds to the opening accents. */
 export const OpeningOffice: React.FC<{ text: string; duration: number }> = ({
   text,
-  duration,
 }) => {
   const frame = useCurrentFrame();
-  const textX = interpolate(frame, [0, 18, duration - 1], [-75, 15, -45], {
-    ...clamp,
-    easing: Easing.bezier(0.45, 0, 0.25, 1),
-  });
-  const textY = interpolate(frame, [0, 18, duration - 1], [-12, -55, -30], {
-    ...clamp,
-    easing: Easing.bezier(0.45, 0, 0.25, 1),
-  });
   const videoStyle = {
     position: "absolute",
     inset: 0,
@@ -92,13 +81,13 @@ export const OpeningOffice: React.FC<{ text: string; duration: number }> = ({
           fontFamily,
           fontSize: 520,
           fontWeight: 900,
-          color: "#F1E270",
+          color: frame < 9 ? "#FAFAF7" : frame < 18 ? "#19191B" : "#F6E779",
           letterSpacing: -21,
           lineHeight: 0.84,
           alignItems: "flex-end",
           padding: "48px 52px 0 0",
           whiteSpace: "nowrap",
-          transform: `translate(${textX}px, ${textY}px)`,
+          transform: "translateY(-30px)",
         }}
       >
         {text}

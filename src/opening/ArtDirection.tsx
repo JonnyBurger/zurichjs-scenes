@@ -46,41 +46,58 @@ const settle = (frame: number) =>
  * All rhythmic changes belong to the surrounding typography, never the logo. */
 export const OpeningBrand: React.FC = () => {
   const frame = useCurrentFrame();
+  const entrance = Math.max(0, frame - 18);
   const words = ["IT", "STARTS", "WITH", "US"];
-  const word = words[Math.min(3, Math.floor(frame / 36))];
-  const local = frame % 36;
+  const wordStarts = [0, 36, 72, 90];
+  let wordIndex = 0;
+  wordStarts.forEach((start, i) => {
+    if (entrance >= start) wordIndex = i;
+  });
+  const word = words[wordIndex];
+  const local = entrance - wordStarts[wordIndex];
+  const isUs = word === "US";
   const { impulse } = accentAt(frame);
   return (
     <AbsoluteFill style={{ background: INK, overflow: "hidden", fontFamily }}>
-      <Img
-        src={staticFile("assets/wordmark-conf-white.svg")}
-        style={{ position: "absolute", width: 1640, left: 140, top: 230 }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 435,
-          height: 520,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          overflow: "hidden",
-        }}
-      >
+      <AbsoluteFill style={{ opacity: frame < 18 ? 0 : 1 }}>
+        <Img
+          src={staticFile("assets/wordmark-conf-white.svg")}
+          style={{
+            position: "absolute",
+            width: 1640,
+            left: 140,
+            top: 230,
+            transform: `translateY(${(1 - settle(entrance + 2)) * 65}px) scale(${1 + (1 - settle(entrance + 2)) * 0.08})`,
+          }}
+        />
         <div
           style={{
-            fontSize: fit(word, 1640, 480),
-            fontWeight: 900,
-            color: local < 18 ? WHITE : YELLOW,
-            lineHeight: 0.9,
-            transform: `translateY(${(1 - settle(local)) * 500}px) scale(${1 + impulse * 0.045})`,
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 435,
+            height: 520,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            overflow: "hidden",
           }}
         >
-          {word}
+          <div
+            style={{
+              fontSize: fit(word, 1640, 480),
+              fontWeight: 900,
+              color: isUs ? YELLOW : local < 18 ? WHITE : YELLOW,
+              lineHeight: 0.9,
+              transform: isUs
+                ? `scale(${1 + Math.exp(-local / 4) * 0.18 + impulse * 0.035})`
+                : `translateY(${(1 - settle(local)) * 500}px) scale(${1 + impulse * 0.045})`,
+            }}
+          >
+            {word}
+          </div>
         </div>
-      </div>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
@@ -191,11 +208,12 @@ export const CounterSplit: React.FC<{
 
 /** Numeric macro > readable value and label > full-frame numeric push-through. */
 export const NumberSequence: React.FC<{
+  impact?: boolean;
   value: string;
   label: string;
   duration: number;
   light?: boolean;
-}> = ({ value, label, duration, light = false }) => {
+}> = ({ value, label, duration, light = false, impact = false }) => {
   const frame = useCurrentFrame();
   const midBeat = beatFrame(2);
   const inverse = frame >= midBeat;
@@ -203,12 +221,17 @@ export const NumberSequence: React.FC<{
   const bg = white ? WHITE : INK;
   const fg = white ? INK : YELLOW;
   const p = frame / (duration - 1);
-  const zoom = interpolate(p, [0, 0.22, 0.72, 1], [2.6, 1, 1.05, 2.5], {
-    ...clamp,
-    easing: ease,
-  });
+  const zoom = interpolate(
+    p,
+    [0, 0.22, 0.72, 1],
+    [impact ? 1.06 : 2.6, 1, 1.05, 2.5],
+    {
+      ...clamp,
+      easing: ease,
+    },
+  );
   const numberSize = value.length === 3 ? 690 : 790;
-  const roll = settle(frame - 4);
+  const roll = impact ? 1 : settle(frame - 4);
   return (
     <AbsoluteFill
       style={{ background: bg, color: fg, overflow: "hidden", fontFamily }}
@@ -217,7 +240,7 @@ export const NumberSequence: React.FC<{
         style={{
           position: "absolute",
           inset: 0,
-          transform: `scale(${zoom}) rotate(${interpolate(p, [0, 0.22, 0.72, 1], [-8, 0, 0, 9], { ...clamp, easing: ease })}deg)`,
+          transform: `scale(${zoom}) rotate(${interpolate(p, [0, 0.22, 0.72, 1], [impact ? 0 : -8, 0, 0, 9], { ...clamp, easing: ease })}deg)`,
           transformOrigin: "50% 44%",
         }}
       >
@@ -239,7 +262,7 @@ export const NumberSequence: React.FC<{
               key={i}
               style={{
                 display: "block",
-                transform: `translateY(${(1 - settle(frame - i * 2)) * (i % 2 ? -900 : 900)}px)`,
+                transform: `translateY(${(impact ? 0 : 1 - settle(frame - i * 2)) * (i % 2 ? -900 : 900)}px)`,
               }}
             >
               {digit}
@@ -314,16 +337,22 @@ export const TypeRibbons: React.FC<{ text: string; duration: number }> = ({
 /** Clean stage handoff: unmodified logo above white sentence-case type. */
 export const OpeningFinale: React.FC<{ duration: number }> = ({ duration }) => {
   const frame = useCurrentFrame();
-  const entry = settle(frame);
+  const entry = settle(frame + 2);
   const push = interpolate(frame, [18, duration - 1], [1.015, 1], clamp);
-  const kick = frame < 36 ? accentAt(frame).impulse * 0.025 : 0;
+  const kick = 0;
   return (
     <AbsoluteFill
       style={{ background: INK, overflow: "hidden", fontFamily, color: WHITE }}
     >
       <Img
         src={staticFile("assets/wordmark-conf-white.svg")}
-        style={{ position: "absolute", width: 1180, left: 370, top: 270 }}
+        style={{
+          position: "absolute",
+          width: 1180,
+          left: 370,
+          top: 270,
+          transform: `translateY(${(1 - entry) * -90}px) scale(${1 + (1 - entry) * 0.08})`,
+        }}
       />
       <div
         style={{
@@ -335,102 +364,169 @@ export const OpeningFinale: React.FC<{ duration: number }> = ({ duration }) => {
           fontSize: fit("Let's start.", 1740, 335),
           fontWeight: 900,
           lineHeight: 1,
-          transform: `translateY(${(1 - entry) * 330}px) scale(${push + kick})`,
+          transform: `translateY(${(1 - entry) * 110}px) scale(${push + kick})`,
         }}
       >
         Let&apos;s start.
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 32,
+          height: 30,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 4,
+          opacity: 0.65,
+          fontSize: 21,
+          fontWeight: 500,
+          lineHeight: 1,
+        }}
+      >
+        <span>made with</span>
+        <Img
+          src={staticFile("assets/remotion-wordmark-white.png")}
+          alt="Remotion"
+          style={{ width: 130, height: 60.185, objectFit: "contain" }}
+        />
       </div>
     </AbsoluteFill>
   );
 };
 
-/** Disjoint groups of portraits move through the frame on the half-beats.
- * These are the existing approved speaker assets, including their brand bars.
- */
-export const SpeakerRush: React.FC<{
-  start: number;
-  duration: number;
-  speakerIds?: string[];
-  label?: string;
-}> = ({ start, duration, speakerIds, label = "OUR PEOPLE" }) => {
+/** Two separate entrances on the measured 9.3s / 9.6s bangs. */
+export const MCIntro: React.FC = () => {
   const frame = useCurrentFrame();
-  const count = Math.ceil(duration / 9);
-  const speakers = speakerIds
-    ? speakerIds.map((id) => {
-        const speaker = CONFERENCE_SPEAKERS.find(
-          (candidate) => candidate.compositionId === id,
-        );
-        if (!speaker) throw new Error(`Unknown opening portrait: ${id}`);
-        return speaker;
-      })
-    : CONFERENCE_SPEAKERS.slice(start, start + count);
-  const step = Math.floor(frame / 9);
-  const fraction = (frame % 9) / 9;
-  const travel = (step + Easing.bezier(0.45, 0, 0.2, 1)(fraction)) * 860;
   return (
-    <AbsoluteFill style={{ background: INK, overflow: "hidden", fontFamily }}>
+    <AbsoluteFill style={{ background: INK, fontFamily, overflow: "hidden" }}>
       <div
         style={{
           position: "absolute",
-          top: 420,
-          left: -180,
-          whiteSpace: "nowrap",
+          left: 110,
+          top: 35,
           color: YELLOW,
-          fontSize: 320,
           fontWeight: 900,
-          opacity: 0.25,
+          fontSize: 100,
         }}
       >
-        {label}. {label}.
+        OUR MCs
       </div>
-      {speakers.map((speaker, i) => (
-        <div
-          key={speaker.compositionId}
-          style={{
-            position: "absolute",
-            left: 530 + i * 860 - travel,
-            top: 68,
-            width: 820,
-            height: 960,
-            transform: `rotate(${interpolate(i * 860 - travel, [-860, 0, 860], [-8, 0, 8], clamp)}deg)`,
-          }}
-        >
-          <Img
-            src={staticFile(speaker.avatarSrc)}
-            style={{ width: 820, height: 820, objectFit: "cover" }}
-          />
+      {["CarmenHuidobro", "TonyEdwards"].map((id, i) => {
+        const speaker = CONFERENCE_SPEAKERS.find(
+          (person) => person.compositionId === id,
+        )!;
+        const local = frame - (i === 0 ? 9 : 18);
+        if (local < 0) return null;
+        const kick = Math.exp(-local / 3);
+        return (
           <div
+            key={id}
             style={{
-              color: WHITE,
-              marginTop: 22,
-              fontSize: fit(
-                `${speaker.firstName} ${speaker.lastName}`,
-                810,
-                58,
-              ),
-              fontWeight: 700,
-              whiteSpace: "nowrap",
-              lineHeight: 1.1,
+              position: "absolute",
+              top: 175,
+              left: 180 + i * 860,
+              width: 700,
+              transform: `scale(${1 + kick * 0.1}) rotate(${kick * (i ? 4 : -4)}deg)`,
             }}
           >
-            {speaker.firstName} {speaker.lastName}
+            <Img
+              src={staticFile(speaker.avatarSrc)}
+              style={{ width: 700, height: 700, objectFit: "cover" }}
+            />
+            <div
+              style={{
+                color: WHITE,
+                fontSize: 57,
+                fontWeight: 700,
+                marginTop: 20,
+              }}
+            >
+              {speaker.firstName} {speaker.lastName}
+            </div>
           </div>
-        </div>
-      ))}
-      {speakerIds && (
-        <div
-          style={{
-            position: "absolute",
-            left: 70,
-            top: 12,
-            color: YELLOW,
-            fontSize: 44,
-            fontWeight: 700,
-          }}
-        >
-          {label}
-        </div>
-      )}
+        );
+      })}
+    </AbsoluteFill>
+  );
+};
+
+export const lineupSpeakers = CONFERENCE_SPEAKERS.filter(
+  (person) =>
+    ["CarmenHuidobro", "TonyEdwards"].indexOf(person.compositionId) === -1,
+);
+
+/** Every speaker/panelist gets a central portrait. Whole beats accelerate into
+ * half beats through the nine-second instrumental phrase, without looping. */
+export const SpeakerLineup: React.FC<{ duration: number }> = ({ duration }) => {
+  const frame = useCurrentFrame();
+  const extraSlots = Math.round(duration / 9) - lineupSpeakers.length;
+  const starts = lineupSpeakers.map(
+    (_, i) => (i + Math.min(i, extraSlots)) * 9,
+  );
+  let active = 0;
+  starts.forEach((start, i) => {
+    if (frame >= start) active = i;
+  });
+  const local = frame - starts[active];
+  const arrival = interpolate(local, [0, 5], [1, 0], { ...clamp, easing: out });
+  const speaker = lineupSpeakers[active];
+  return (
+    <AbsoluteFill
+      style={{
+        background: active % 2 ? YELLOW : INK,
+        overflow: "hidden",
+        fontFamily,
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          left: 70,
+          top: 48,
+          color: active % 2 ? INK : YELLOW,
+          fontSize: 58,
+          fontWeight: 900,
+        }}
+      >
+        THE LINEUP
+      </div>
+      {lineupSpeakers.map((person, i) => {
+        if (Math.abs(i - active) > 1) return null;
+        const offset = i - active;
+        return (
+          <Img
+            key={person.compositionId}
+            src={staticFile(person.avatarSrc)}
+            style={{
+              position: "absolute",
+              left: 540 + offset * 970 + arrival * 110,
+              top: 80,
+              width: 840,
+              height: 840,
+              objectFit: "cover",
+              transform: `perspective(1400px) rotateY(${offset * -22 + arrival * 12}deg) rotate(${offset * 7}deg)`,
+              opacity: offset ? 0.45 : 1,
+            }}
+          />
+        );
+      })}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 52,
+          left: 70,
+          right: 70,
+          color: active % 2 ? INK : WHITE,
+          fontSize: fit(`${speaker.firstName} ${speaker.lastName}`, 1770, 98),
+          fontWeight: 900,
+          textAlign: "center",
+        }}
+      >
+        {speaker.firstName} {speaker.lastName}
+      </div>
     </AbsoluteFill>
   );
 };

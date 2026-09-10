@@ -2,7 +2,13 @@ import "./index.css";
 import { Composition, Folder } from "remotion";
 import { ConferenceOpening } from "./ConferenceOpening";
 import { OPENING_DURATION_IN_FRAMES, OPENING_FPS } from "./opening/timing";
-import { Break, BREAK_DURATION_IN_FRAMES } from "./Break";
+import {
+  Break,
+  BREAK_DURATION_IN_FRAMES,
+  BREAK_FPS,
+  BREAK_LOOP_DURATION_IN_FRAMES,
+  BREAK_INTRO_DURATION_IN_FRAMES,
+} from "./Break";
 import { FinalSpeakerEndcard } from "./FinalSpeakerEndcard";
 import { E18eFriendsPanel } from "./E18eFriendsPanel";
 import { FortyFiveGeometry } from "./FortyFiveGeometry";
@@ -58,7 +64,25 @@ export const RemotionRoot: React.FC = () => {
           id="Break"
           component={Break}
           durationInFrames={BREAK_DURATION_IN_FRAMES}
-          fps={30}
+          fps={BREAK_FPS}
+          width={1920}
+          height={1080}
+        />
+        <Composition
+          id="BreakLoop"
+          component={Break}
+          defaultProps={{ mode: "hold" as const }}
+          durationInFrames={BREAK_LOOP_DURATION_IN_FRAMES}
+          fps={BREAK_FPS}
+          width={1920}
+          height={1080}
+        />
+        <Composition
+          id="BreakIntro"
+          component={Break}
+          defaultProps={{ mode: "intro" as const }}
+          durationInFrames={BREAK_INTRO_DURATION_IN_FRAMES}
+          fps={BREAK_FPS}
           width={1920}
           height={1080}
         />

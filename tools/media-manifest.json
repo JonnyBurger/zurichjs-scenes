@@ -1,0 +1,50 @@
+[
+  {
+    "path": "public/audio/generated/break-cycle.wav",
+    "size": 28224044,
+    "sha256": "e79b2a9a4a9415e536a5069bdbe2dfd08109587dbae66c56ccd05eb42b84b8ef",
+    "url": "https://github.com/nosthrillz/zurichjs-scenes/releases/download/conference-media-v1/break-cycle.wav"
+  },
+  {
+    "path": "public/audio/generated/break-timed.wav",
+    "size": 52920044,
+    "sha256": "af35f7cbaaffc5a3aa6a2db6aab10c6fda4d92d54150516f3c7080200af691d9",
+    "url": "https://github.com/nosthrillz/zurichjs-scenes/releases/download/conference-media-v1/break-timed.wav"
+  },
+  {
+    "path": "public/video/drone-loops/4k-drone-aerial-view-of-zurich-city-waterfront-in-2026-01-21-02-19-30-utc.mp4",
+    "size": 133919041,
+    "sha256": "e9eac4b8fd91b4c61b03b5624acbb1c6c87b1c9766e775bda83f0b38838b9afa",
+    "url": "https://github.com/nosthrillz/zurichjs-scenes/releases/download/conference-media-v1/4k-drone-aerial-view-of-zurich-city-waterfront-in-2026-01-21-02-19-30-utc.mp4"
+  },
+  {
+    "path": "public/video/drone-loops/aerial-drone-wide-cinematic-shot-circling-around-g-2025-12-17-23-11-16-utc.mov",
+    "size": 488072461,
+    "sha256": "6a513c91786235f97a16bac767aa42294e98e90ab25dae362294795abcf2b979",
+    "url": "https://github.com/nosthrillz/zurichjs-scenes/releases/download/conference-media-v1/aerial-drone-wide-cinematic-shot-circling-around-g-2025-12-17-23-11-16-utc.mov"
+  },
+  {
+    "path": "public/video/drone-loops/drone-establishing-shot-over-the-city-of-zurich-in-2026-01-21-12-30-54-utc.mp4",
+    "size": 115473460,
+    "sha256": "93ac92cdef7478900396422e8b918dd640c6dcaa6d30599785ca4d539280ccb1",
+    "url": "https://github.com/nosthrillz/zurichjs-scenes/releases/download/conference-media-v1/drone-establishing-shot-over-the-city-of-zurich-in-2026-01-21-12-30-54-utc.mp4"
+  },
+  {
+    "path": "public/video/drone-loops/zoomed-in-drone-shot-circling-around-grossmunster-2025-12-17-15-37-29-utc.mov",
+    "size": 114000244,
+    "sha256": "ae74b49944e8d3328a173d5064f6d14f7f538a2a02254072a0848921fc248f0f",
+    "url": "https://github.com/nosthrillz/zurichjs-scenes/releases/download/conference-media-v1/zoomed-in-drone-shot-circling-around-grossmunster-2025-12-17-15-37-29-utc.mov"
+  },
+  {
+    "path": "public/video/drone-loops/zurich-switzerland-aerial-view-with-swiss-flag-2025-12-17-04-30-25-utc.mov",
+    "size": 991804142,
+    "sha256": "7fedefcd091d0d5e13c7eab8a75f59edfa39ce4e2570196dab7cf61526879503",
+    "url": "https://github.com/nosthrillz/zurichjs-scenes/releases/download/conference-media-v1/zurich-switzerland-aerial-view-with-swiss-flag-2025-12-17-04-30-25-utc.mov"
+  },
+  {
+    "path": "public/video/generated/break-swiss-flag.mp4",
+    "size": 172079505,
+    "sha256": "c69165a73ef1a61ffe2447d41115a1ffee5db100211e467679ae62c77fdff392",
+    "url": "https://github.com/nosthrillz/zurichjs-scenes/releases/download/conference-media-v1/break-swiss-flag.mp4"
+  }
+]
