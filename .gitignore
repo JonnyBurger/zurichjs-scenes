@@ -4,3 +4,7 @@ dist
 .DS_Store
 .env
 out
+
+# New video assets are supplied separately.
+public/video/drone-loops/
+public/video/generated/
